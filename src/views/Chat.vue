@@ -1,11 +1,22 @@
 <template>
   <div class="chat container">
-    <h2>Chat</h2>
+    <h2 center teal-text>Ninja chat</h2>
+    <ChatScreen></ChatScreen>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapState } from "vuex";
+import ChatScreen from "../components/ChatScreen.vue";
+
+export default {
+  computed: {
+    ...mapState("chat", ["name"])
+  },
+  components: {
+    ChatScreen
+  }
+};
 </script>
 
 <style>

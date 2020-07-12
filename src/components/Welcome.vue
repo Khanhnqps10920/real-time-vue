@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-content center-align">
         <h2 class="teal-text">Welcome</h2>
-        <form @submit.prevent>
+        <form @submit.prevent="enterChat">
           <label for="name">Enter your name:</label>
           <input
             type="text"
@@ -12,7 +12,7 @@
             @input=" e => { changeName(e.target.value); }"
           />
           <p v-if="feedBack" class="red-text">{{ feedBack }}</p>
-          <button class="btn teal" @click="enterChat">Enter Chat</button>
+          <button class="btn teal">Enter Chat</button>
         </form>
       </div>
     </div>
