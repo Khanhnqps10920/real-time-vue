@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
+import database from "../firebase/init";
 
 Vue.use(Vuex);
 
@@ -10,7 +11,10 @@ export const store = new Store({
       // state
       state: () => ({
         name: null,
-        feedBack: null
+        feedBack: null,
+        newMessage: null,
+        listMessage: [],
+        loading: true
       }),
       // getters
       getters: {
@@ -25,6 +29,13 @@ export const store = new Store({
         },
         changeFeedBack: (state, payload) => {
           state.feedBack = payload;
+        },
+        changeMessage: (state, payload) => {
+          state.newMessage = payload;
+        },
+        fetchListMessage: (state, payload) => {
+          state.listMessage.push(payload);
+          state.loading = false;
         }
       },
       // actions
@@ -34,6 +45,30 @@ export const store = new Store({
         },
         changeFeedBack: ({ commit }, payload) => {
           commit("changeFeedBack", payload);
+        },
+        changeMessage: ({ commit }, payload) => {
+          commit("changeMessage", payload);
+        },
+        fetchListMessage: ({ commit }) => {
+          // watching for database by using docchanges 
+          try {
+            let ref = database.collection("messages").orderBy("timestamp");
+            ref.onSnapshot(snapShot => {
+              snapShot.docChanges().forEach(change => {
+                if (change.type === "added") {
+                  let doc = change.doc;
+                  commit("fetchListMessage", {
+                    id: doc.id,
+                    name: doc.data().name,
+                    content: doc.data().content,
+                    timestamp: doc.data().timestamp
+                  });
+                }
+              });
+            });
+          } catch (e) {
+            console.log(e);
+          }
         }
       }
     }

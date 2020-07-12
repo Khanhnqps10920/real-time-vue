@@ -1,6 +1,6 @@
 <template>
   <div class="chat container">
-    <h2 center teal-text>Ninja chat</h2>
+    <h2 class="center teal-text">Ninja chat</h2>
     <ChatScreen></ChatScreen>
   </div>
 </template>
@@ -20,4 +20,8 @@ export default {
 </script>
 
 <style>
+.chat h2 {
+  font-size: 2.6em;
+  margin-bottom: 40px;
+}
 </style>
